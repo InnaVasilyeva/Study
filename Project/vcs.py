@@ -1,9 +1,8 @@
 # Проект скрипта запуск которого автоматизирует вызов c сервера ВКС  терминалов видеоконферцсвязи  
 # из заданного списка.
-# При запуске скрипта необходимо выбрать заданный параметр (1/2), после чего, должно проходить 
-# автоматическое подключение/отключение абонентов.
-# 
-#
+# При запуске скрипта необходимо выбрать параметр (1/2) в зависимости от подключения/отключения 
+# абонентов
+ 
 from pprint import pprint
 import re
 import sys
@@ -36,8 +35,15 @@ def autoconnect(action) :
         for element in Party :
             pprint ("Отключаем абонента")
             pprint (element)
-            connect = requests.get()
-            if  # ''.join(re.findall(r'callLegs total="(\d)', connect.text)) == '0'
+            connect = requests.get(CMS_BASE + 'calllegs?filter=' + element, verify = false, headers=CMS_HEADERS)
+            if  # ''.join(re.findall(r'callLegs total="(\d)', connect.text)) == '0':
+                # cleg =''.join(refindall(r'callleg id="(\w+\-\w+\-\w+\-\w+\-\w+\)', connect.text)) 
                 # requests.delete(CMS_BASE + 'calls/' + CallID + '/calllegs') 
             else :
                  print ("Абонент не подключен - отмена ") 
+
+print ("Выберите операцию и нажмите enter: ")
+print (" 1 - автоматическое подключеие абонентов")
+print (" 2 - автоматическое отключение абонентов")
+actiontype = int(sys.stdin.readline())
+autoconnect(actiontype)
